@@ -48,6 +48,20 @@ Here the ![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxz%7D%3D%5Ckappa%28x
 
 where g is any funtion, usually Poly function g(x)=x^n and Exponential function g(x)=exp(x)
 
+##### performance
+
+The performance is acceptable, when the given tracking image has same smae size as template. But when the two sizes don't match. The performance become so bad. 
+
+For example, I draw the test result.
+
+- left:   template image x and its target y (a gauss distribution in the center) 
+
+- mid:  detected image z and its target t (a gauss distribution not in the center) 
+
+- right: detected image z and detected result r 
+
+  ![KCF_example.png](https://github.com/veya2ztn/FFTtracking/blob/master/KCF_example.png?raw=true)
+
 #### ML-KCF
 
 in order to get better porfermance, using Nerual Network N present function g. The requirment is that $k^{xx}$ get the same shape as input data y. 
