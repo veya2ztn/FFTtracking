@@ -38,25 +38,23 @@ output response field: r
 
 - r.shape =  (Batch,1,w2,h2)
 
-$$
-\hat{r}=\hat{k^{xz}}.*\frac{\hat{y}}{\hat{k^{xx}}+\lambda}
-$$
+![img](https://latex.codecogs.com/gif.latex?%5Chat%7Br%7D%3D%5Chat%7Bk%5E%7Bxz%7D%7D.*%5Cfrac%7B%5Chat%7By%7D%7D%7B%5Chat%7Bk%5E%7Bxx%7D%7D+%5Clambda%7D)
 
-Here $\hat{r} = \mathcal{F}(r)$ is the Fourier Transformation of r.
+Here ![img](https://latex.codecogs.com/gif.latex?%5Chat%7Br%7D%20%3D%20%5Cmathcal%7BF%7D%28r%29) is the Fourier Transformation of r.
 
-Here the $k^{xz}=\kappa(x,z) $ is the kernel function satisfy
-$$
-\kappa(x,z) = g[||x||^2,||z||^2,\mathcal{F}^{-1}(\hat{x}^*.*\hat{z})]
-$$
+Here the ![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxz%7D%3D%5Ckappa%28x%2Cz%29) is the kernel function satisfy
+
+![img](https://latex.codecogs.com/gif.latex?%5Ckappa%28x%2Cz%29%20%3D%20g%5B%7C%7Cx%7C%7C%5E2%2C%7C%7Cz%7C%7C%5E2%2C%5Cmathcal%7BF%7D%5E%7B-1%7D%28%5Chat%7Bx%7D%5E*.*%5Chat%7Bz%7D%29%5D)
+
 where g is any funtion, usually Poly function g(x)=x^n and Exponential function g(x)=exp(x)
 
 #### ML-KCF
 
 in order to get better porfermance, using Nerual Network N present function g. The requirment is that $k^{xx}$ get the same shape as input data y. 
 
-The consistent shape between $k^{xz}$ and x(y) is not necessary. Because the real reponse can be achieved by convolution between real $k^{xz}$ and real $\alpha=\mathcal{F}^{-1}(\frac{\hat{y}}{\hat{k^{xx}}+\lambda})$. So the dimenstion can be different.
+The consistent shape between ![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxz%7D) and x(y) is not necessary. Because the real reponse can be achieved by convolution between real ![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxz%7D)  and real ![img](https://latex.codecogs.com/gif.latex?%5Calpha%3D%5Cmathcal%7BF%7D%5E%7B-1%7D%28%5Cfrac%7B%5Chat%7By%7D%7D%7B%5Chat%7Bk%5E%7Bxx%7D%7D+%5Clambda%7D%29). So the dimenstion can be different.
 
-Of course, the key part $\mathcal{F}^{-1}(\hat{x}^*.*\hat{z})$ can still be some convolution between $x$ and $z$. 
+​Of course, the key part ![img](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BF%7D%5E%7B-1%7D%28%5Chat%7Bx%7D%5E*.*%5Chat%7Bz%7D%29) can still be some convolution between x and z. 
 
 ##### Tracking dataset
 
@@ -66,13 +64,13 @@ Showing the tracking image: a image z and a ground_truth r
 
 -------
 
-Input {x|(B,C,W,H)} into Network ---> {$k^{xx}$|(B,C2,W,H)}
+Input {x|(B,C,W,H)} into Network ---> {![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxx%7D)|(B,C2,W,H)}
 
-Using {y|(B,1,W,H)} and  {$k^{xx}$|(B,C2,W,H)} get {$\alpha$|(B,C2,W,H)}
+Using {y|(B,1,W,H)} and  {![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxx%7D)|(B,C2,W,H)} get {$\alpha$|(B,C2,W,H)}
 
-Input  {z|(B,C,W2,H2)} into Network ---> {$k^{xz}$|(B,C2,W2,H2)}
+Input  {z|(B,C,W2,H2)} into Network ---> { ![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxz%7D) |(B,C2,W2,H2)}
 
-Using {$k^{xz}$|(B,C2,W2,H2)} and {$\alpha$|(B,C2,W,H)} ---> {r|(B,C2,W2,H2}---> {r|(B,1,W2,H2}
+Using { ![img](https://latex.codecogs.com/gif.latex?k%5E%7Bxz%7D) |(B,C2,W2,H2)} and {![img](https://latex.codecogs.com/gif.latex?%5Calpha)|(B,C2,W,H)} ---> {r|(B,C2,W2,H2}---> {r|(B,1,W2,H2}
 
 ----
 
