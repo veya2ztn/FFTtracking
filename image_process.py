@@ -60,7 +60,7 @@ class data_process:
         self.hanning_for_detected = True
         self.isbox = True
         self.distribution='normal'
-
+        self.detected_offset_mode = None
     def numpy2torch(self,input_img):
         shape = input_img.shape
         input_img = input_img[None]
@@ -177,6 +177,24 @@ class data_process:
         d_search  = (instance_size - exemplar_size) / 2
         pad       = d_search / scale_z
         sc_x      = sc_z + 2 * pad
+        if self.detected_offset_mode is None:
+            offset_x=0
+            offset_y=0
+        elif self.detected_offset_mode is 'random':
+            #random shift max 1/3 width
+            offset_r=(np.random.rand(2)-0.5)/2
+            offset_x=offset_r[0]*c_w
+            offset_y=offset_r[1]*c_h
+        else:
+            raise NotImplementedError
+
+        if target_should is not None:
+            c_x_s,c_y_s,c_w_s,c_h_s = target_should
+            c_x=(c_x_s+c_x)//2+offset_x
+            c_y=(c_y_s+c_y)//2+offset_y
+        else:
+            c_x+=offset_x
+            c_y+=offset_y
         x_crop    = get_subwindow_tracking(img, (c_x,c_y) , instance_size, round(sc_x),self.avg_chans,out_mode='numpy')
         z_crop    = x_crop/255
         win_patch = z_crop
@@ -199,6 +217,9 @@ class data_process:
             return win_patch
 
         c_x_s,c_y_s,c_w_s,c_h_s = target_should
+        # the ground truth is define as the offset for last frame target
+        # last frame target is shift to the center
+        # but this relation can be broken, let the detected image can be any where
         t_x,t_y = model_size//2+(c_x_s-c_x)*scale_z,model_size//2+(c_y_s-c_y)*scale_z
         processed_target= (t_x,t_y,c_w_s*scale_z,c_h_s*scale_z,(model_size,model_size))
         converted_target= self.convert_target(processed_target)
